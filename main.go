@@ -12,5 +12,5 @@ func main() {
 	flag.Parse()
 	fmt.Printf("%s\n", *fileName)
 
-	drive.ListFiles("name contains 'Job'")
+	drive.ListFiles(fmt.Sprintf("name = '%s'", *fileName))
 }
