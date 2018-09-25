@@ -86,28 +86,29 @@ func client() *http.Client {
 }
 
 // ListFiles lists all the files in my Google Drive directory
-func ListFiles(query string) int {
+func ListFiles(query string) string {
 
 	srv, err := drive.New(client())
 	if err != nil {
 		log.Fatalf("Unable to retrieve Drive client: %v", err)
 	}
+
 	r, err := srv.Files.List().Q(query).
-		Fields("files(id, name)").Do()
+		Fields("files(id, name, webViewLink)").Do()
 	if err != nil {
 		log.Fatalf("Unable to retrieve files: %v", err)
 	}
+
+	var webView string
 
 	fmt.Println("Files:")
 	if len(r.Files) == 0 {
 		fmt.Println("No files found.")
 	} else {
 		for _, i := range r.Files {
-			fmt.Printf("%s (%s)\n", i.Name, i.Id)
+			webView = i.WebViewLink
+			fmt.Printf("%s (%s) -- %s\n", i.Name, i.Id, i.WebViewLink)
 		}
 	}
-	return 1
-}
-
-func main() {
+	return webView
 }
