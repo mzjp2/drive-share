@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 
+	"github.com/atotto/clipboard"
 	"github.com/mzjp2/drive-share/drive"
 )
 
@@ -12,5 +13,6 @@ func main() {
 	flag.Parse()
 	fmt.Printf("%s\n", *fileName)
 
-	drive.ListFiles(fmt.Sprintf("name = '%s'", *fileName))
+	webView := drive.ListFiles(fmt.Sprintf("name = '%s'", *fileName))
+	clipboard.WriteAll(webView)
 }
